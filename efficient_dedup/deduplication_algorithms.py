@@ -17,7 +17,9 @@ class CustomComparisonDeduplicationAlgorithm(DeduplicationAlgorithm):
 
         for index, element in enumerate(list_with_duplicates):
             if not to_remove[index]:
-                to_remove = [True if e == element else to_remove[i] for i, e in enumerate(list_with_duplicates)]
+                to_remove = [True if self.__comparison_fun(e, element) else to_remove[i]
+                             for i, e in enumerate(list_with_duplicates)]
+                to_remove[index] = False
 
         return [e for i, e in enumerate(list_with_duplicates) if not to_remove[i]]
 
@@ -36,7 +38,7 @@ class LookaheadCustomComparisonDeduplicationAlgorithm(DeduplicationAlgorithm):
                 lookahead_window_end = min(index + 100, len(list_with_duplicates))
 
                 to_remove[lookahead_window_start:lookahead_window_end] =\
-                    [True if e == element else to_remove[i]
+                    [True if self.__comparison_fun(e, element) else to_remove[i + lookahead_window_start]
                         for i, e in enumerate(list_with_duplicates[lookahead_window_start:lookahead_window_end])]
 
         return [e for i, e in enumerate(list_with_duplicates) if not to_remove[i]]

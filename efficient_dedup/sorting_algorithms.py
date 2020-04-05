@@ -1,5 +1,5 @@
 class SortingAlgorithm:
-    def __init__(self, reverse=True):
+    def __init__(self, reverse=False):
         self.__reverse = reverse
 
     def sort(self, list_to_sort):
